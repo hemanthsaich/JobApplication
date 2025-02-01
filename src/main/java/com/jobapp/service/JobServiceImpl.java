@@ -2,6 +2,7 @@ package com.jobapp.service;
 
 import com.jobapp.entity.Job;
 import com.jobapp.repository.JobRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class JobServiceImpl implements JobService {
     // private final List<Job> jobs = new ArrayList<>(); // In-memory job list
 
     @Autowired
-    JobRepository jobRepository;
+    private JobRepository jobRepository;
 
 
     // Retrieve all jobs
@@ -23,8 +24,10 @@ public class JobServiceImpl implements JobService {
     }
 
     // Add a new job
+    @Transactional
     @Override
     public void addJob(Job job) {
+        job.setId(null);
         jobRepository.save(job);
     }
 
@@ -46,6 +49,7 @@ public class JobServiceImpl implements JobService {
     }
 
     // Update a job by ID
+    @Transactional
     @Override
     public boolean updateJobById(Long id, Job updatedJob) {
         Optional<Job> jobOptional = jobRepository.findById(id);
@@ -56,7 +60,9 @@ public class JobServiceImpl implements JobService {
             job.setDescription(updatedJob.getDescription()); // Updates job description
             job.setMinSalary(updatedJob.getMinSalary()); // Updates min salary
             job.setMaxSalary(updatedJob.getMaxSalary()); // Updates max salary
-            return true; // Returns true if job is found and updated
+            job.setLocation(updatedJob.getLocation()); // Updates location
+
+            return true; // Returns true if job is found and get updated
         }
         return false; // Returns false if job not found
     }

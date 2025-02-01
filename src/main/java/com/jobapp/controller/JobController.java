@@ -17,13 +17,13 @@ public class JobController {
     private JobService jobService;
 
     // Get all jobs
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<Job>> findAll(){
         return ResponseEntity.ok(jobService.findAll()); // Returns the list of jobs with HTTP 200 OK status
     }
 
     // Add a new job
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> addJob(@RequestBody Job job){
         jobService.addJob(job);
         return new ResponseEntity<>("Job added successfully", HttpStatus.CREATED); // HTTP 201 Created
